@@ -35,6 +35,7 @@ function snakeInitial() {
   snake.body = [];
   snake.direction = "right";
   score = 0;
+  speed = 100;
 
   gameBoard.innerHTML = "";
   scoreDOM.innerHTML = score;
@@ -108,7 +109,10 @@ function updateSnake() {
   } else if (newHead.x === food.x && newHead.y === food.y) {
     let newHeadCell = drawCells(newHead.x, newHead.y);
     gameBoard.appendChild(newHeadCell);
+
+    // 更新身體部分
     snake.body.push({ x: newHead.x, y: newHead.y, element: newHeadCell });
+    // 更新遊戲版上的物體內容
     board[newHead.x][newHead.y] = snake.body[snake.body.length - 1].element;
 
     food = null;
@@ -121,15 +125,11 @@ function updateSnake() {
 
     // 更新身體部分
     snake.body.push({ x: newHead.x, y: newHead.y, element: newHeadCell });
-
     let tail = snake.body.shift();
     board[tail.x][tail.y] = null;
-    // console.log(snake.body);
 
     // 更新遊戲版上的物體內容
-    // board[tail.x][tail.y] = null;
     board[newHead.x][newHead.y] = snake.body[snake.body.length - 1].element;
-    // console.log(board);
   }
 
   updateFood();
@@ -142,6 +142,9 @@ function updateFood() {
     createFood();
     score++;
     scoreDOM.innerHTML = score;
+    if (score !== 0 && score % 5 === 0) {
+      speed = speed * (8 / 10);
+    }
   }
 }
 
